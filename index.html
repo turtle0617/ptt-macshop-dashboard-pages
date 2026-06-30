@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PTT MacShop MacBook Price Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #172033;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #263449;
+      --accent: #60a5fa;
+      --accent-2: #22c55e;
+      --danger: #f97316;
+      --chip: #1e293b;
+      --table: #0b1220;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: radial-gradient(circle at top left, #1e3a8a 0, transparent 34%), var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a { color: #93c5fd; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      width: min(1280px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 800px;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .notice {
+      background: rgba(96, 165, 250, 0.11);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      color: #bfdbfe;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      max-width: 380px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(15, 23, 42, 0.96));
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .filters {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: #0b1220;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input::placeholder { color: #64748b; }
+
+    .multi-select {
+      width: 100%;
+      min-height: 45px;
+      max-height: 150px;
+      overflow: auto;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: #0b1220;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 7px;
+    }
+
+    .multi-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 6px;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 13px;
+      text-transform: none;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .multi-option:hover { background: rgba(148, 163, 184, 0.08); }
+
+    .multi-option input {
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: #2563eb;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    button.secondary {
+      background: #1f2937;
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    button:hover { filter: brightness(1.08); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      padding: 16px;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .stat .value {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.55fr .85fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .chart-card, .side-card {
+      padding: 18px;
+    }
+
+    .chart-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .chart-header, .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chart-wrap {
+      height: 390px;
+      position: relative;
+    }
+
+    .chart-tools {
+      min-width: 260px;
+      width: min(420px, 100%);
+    }
+
+    .empty-state {
+      display: none;
+      position: absolute;
+      inset: 0;
+      place-items: center;
+      padding: 22px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(11, 18, 32, 0.72);
+      border: 1px dashed rgba(148, 163, 184, 0.24);
+      border-radius: 14px;
+      z-index: 2;
+    }
+
+    .empty-state.is-visible { display: grid; }
+
+    .empty-state strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--chip);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      color: #cbd5e1;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+
+    .table-card {
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 1120px;
+      width: 100%;
+      background: var(--table);
+    }
+
+    th, td {
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    th {
+      color: #cbd5e1;
+      background: #111827;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    td { color: #e2e8f0; }
+    td.muted { color: var(--muted); }
+    .date-cell { min-width: 112px; white-space: nowrap; }
+    .price { font-weight: 800; color: #bbf7d0; white-space: nowrap; }
+    .title-cell { max-width: 360px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: rgba(96, 165, 250, .12);
+      border: 1px solid rgba(96, 165, 250, .22);
+      color: #bfdbfe;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .table-empty {
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .pager {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pager button:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+      filter: none;
+    }
+
+    .sync-status {
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 980px) {
+      header, .layout { grid-template-columns: 1fr; display: block; }
+      .notice { max-width: none; margin-top: 16px; }
+      .filters { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .layout { display: grid; grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .filters, .stats { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; align-items: stretch; }
+      .chart-wrap { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>PTT MacShop MacBook Price Dashboard</h1>
+        <div class="subtitle">
+          依 Air / Pro、年份、Chip、Storage、Memory 快速篩選，查看價格走勢與原始販售文章。
+        </div>
+      </div>
+      <div class="notice">
+        公開頁只讀取靜態 object snapshot；資料更新由內部 sync script 產生，不暴露更新 API。
+      </div>
+    </header>
+
+    <section class="panel filters">
+      <div class="field">
+        <label>Series</label>
+        <div id="family" class="multi-select" data-filter="family"></div>
+      </div>
+      <div class="field">
+        <label>Year</label>
+        <div id="year" class="multi-select" data-filter="year"></div>
+      </div>
+      <div class="field">
+        <label>Chip</label>
+        <div id="chip" class="multi-select" data-filter="chip"></div>
+      </div>
+      <div class="field">
+        <label>Storage</label>
+        <div id="storage" class="multi-select" data-filter="storage"></div>
+      </div>
+      <div class="field">
+        <label>Memory</label>
+        <div id="memory" class="multi-select" data-filter="memory"></div>
+      </div>
+      <div class="field">
+        <label for="search">Search</label>
+        <input id="search" placeholder="M3 Pro / 512 / 14吋..." />
+      </div>
+      <div class="field">
+        <label for="minPrice">Min price</label>
+        <input id="minPrice" type="number" placeholder="e.g. 20000" />
+      </div>
+      <div class="field">
+        <label for="maxPrice">Max price</label>
+        <input id="maxPrice" type="number" placeholder="e.g. 50000" />
+      </div>
+      <div class="field">
+        <label for="dateFrom">Date from</label>
+        <input id="dateFrom" type="date" />
+      </div>
+      <div class="field">
+        <label for="dateTo">Date to</label>
+        <input id="dateTo" type="date" />
+      </div>
+      <div class="field actions">
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+      <div class="field actions">
+        <button id="csvBtn">Export CSV</button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="panel stat"><div class="label">Listings</div><div id="statCount" class="value">-</div></div>
+      <div class="panel stat"><div class="label">Median</div><div id="statMedian" class="value">-</div></div>
+      <div class="panel stat"><div class="label">Average</div><div id="statAverage" class="value">-</div></div>
+      <div class="panel stat"><div class="label">Min</div><div id="statMin" class="value">-</div></div>
+      <div class="panel stat"><div class="label">Max</div><div id="statMax" class="value">-</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="chart-stack">
+        <div class="panel chart-card">
+          <div class="chart-header">
+            <div>
+              <h2>Market scatter</h2>
+              <div class="hint">每個點代表一篇販售文章；顏色依 Series / Chip 分組。</div>
+            </div>
+            <span id="resultLabel" class="badge">0 results</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="marketChart"></canvas>
+            <div id="marketEmpty" class="empty-state">
+              <div>
+                <strong>No matching listings</strong>
+                <span>放寬篩選條件，或按 Reset 回到完整市場分布。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel chart-card">
+          <div class="chart-header">
+            <div>
+              <h2>Same-spec history</h2>
+              <div class="hint">同一條線代表相同 Series / Chip / Memory / Storage；Year 會在 hover tooltip 顯示。</div>
+            </div>
+            <div class="chart-tools">
+              <label for="specPreset">Quick spec</label>
+              <select id="specPreset"></select>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="specChart"></canvas>
+            <div id="specEmpty" class="empty-state">
+              <div>
+                <strong>Select one exact spec</strong>
+                <span>請先用 Quick spec，或選定 Series、Year、Chip、Memory、Storage 各一個選項。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel side-card">
+        <div class="chart-header">
+          <div>
+            <h2>Active filters</h2>
+            <div class="hint">篩選器會即時更新圖表與表格。</div>
+          </div>
+        </div>
+        <div id="activeChips" class="chips"></div>
+        <hr style="border:0;border-top:1px solid rgba(148,163,184,.14);margin:16px 0;">
+        <h2>How to update data</h2>
+        <p class="hint">
+          內部執行 <code>npm run refresh-data</code> 會同步最新文章並輸出 <code>listings-data.js</code>。
+          公開頁只載入 <code>window.MACSHOP_DATA</code>，不呼叫查詢或更新 API。
+        </p>
+      </div>
+    </section>
+
+    <section class="panel table-card">
+      <div class="table-header">
+        <div>
+          <h2>Sale posts</h2>
+          <div class="hint">點擊表頭可排序；點「原文」回到 PTT。</div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="published_at" class="date-cell">Date</th>
+              <th data-sort="family">Series</th>
+              <th data-sort="model_year">Year</th>
+              <th data-sort="chip">Chip</th>
+              <th data-sort="memory_gb">Memory</th>
+              <th data-sort="storage_gb">Storage</th>
+              <th data-sort="price_ntd">Price</th>
+              <th data-sort="location">Location</th>
+              <th>Title</th>
+              <th>Original</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="tableEmpty" class="table-empty" hidden>
+          沒有符合條件的資料。請放寬篩選條件，或按 Reset 回到完整列表。
+        </div>
+      </div>
+      <div class="pager">
+        <button id="prevPageBtn" class="secondary">Prev</button>
+        <span id="pageInfo" class="hint">Page 1 / 1</span>
+        <button id="nextPageBtn" class="secondary">Next</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      Data source: PTT MacShop static object snapshot. This site does not mirror seller contact info; use the original PTT link for final verification.
+    </div>
+  </div>
+
+<script src="listings-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
