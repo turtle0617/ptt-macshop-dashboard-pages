@@ -1,5 +1,5 @@
 window.MACSHOP_DATA = {
-  "generatedAt": "2026-06-30T05:42:18.358Z",
+  "generatedAt": "2026-06-30T05:49:49.886Z",
   "listings": [
     {
       "article_id": "M.1782752508.A.EC4",
@@ -1170,22 +1170,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1781326515.A.BF4.html"
     },
     {
-      "article_id": "M.1781281077.A.29F",
-      "published_at": "2026-06-12",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1781281077.A.29F.html"
-    },
-    {
       "article_id": "M.1781266850.A.6F4",
       "published_at": "2026-06-12",
       "family": "Air",
@@ -1746,22 +1730,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1780208526.A.033.html"
     },
     {
-      "article_id": "M.1780184164.A.493",
-      "published_at": "2026-05-30",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1780184164.A.493.html"
-    },
-    {
       "article_id": "M.1780119980.A.99D",
       "published_at": "2026-05-30",
       "family": "Pro",
@@ -2000,22 +1968,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1779815892.A.F11.html"
-    },
-    {
-      "article_id": "M.1779807481.A.4C0",
-      "published_at": "2026-05-26",
-      "family": "Pro",
-      "model_year": "2023",
-      "chip": "M3 Pro",
-      "memory_gb": 512,
-      "storage_gb": 4096,
-      "price_ntd": 42000,
-      "title": "[販售] 台北 二手 M3 PRO 14\"Macbook",
-      "author": "weedey (寒翼)",
-      "location": "面交 台北 芝山/南京復興可自取，其他待討論",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1779807481.A.4C0.html"
     },
     {
       "article_id": "M.1779784896.A.9DE",
@@ -2338,22 +2290,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1779151197.A.64C.html"
     },
     {
-      "article_id": "M.1779129658.A.8C8",
-      "published_at": "2026-05-18",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1779129658.A.8C8.html"
-    },
-    {
       "article_id": "M.1779090309.A.5AA",
       "published_at": "2026-05-18",
       "family": "Air",
@@ -2496,22 +2432,6 @@ window.MACSHOP_DATA = {
       "condition": "new/sealed",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1778772183.A.DFB.html"
-    },
-    {
-      "article_id": "M.1778765163.A.379",
-      "published_at": "2026-05-14",
-      "family": "Pro",
-      "model_year": "2023",
-      "chip": "M3 Pro",
-      "memory_gb": 512,
-      "storage_gb": 4096,
-      "price_ntd": 42000,
-      "title": "[販售] 台北 二手14吋Macbook Pro",
-      "author": "weedey (寒翼)",
-      "location": "面交 台北 芝山/南京復興可自取，其他待討論",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1778765163.A.379.html"
     },
     {
       "article_id": "M.1778759473.A.945",
@@ -2722,22 +2642,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1778507735.A.BBC.html"
     },
     {
-      "article_id": "M.1778472971.A.CF6",
-      "published_at": "2026-05-11",
-      "family": "Pro",
-      "model_year": "2013",
-      "chip": "Intel",
-      "memory_gb": 500,
-      "storage_gb": 64,
-      "price_ntd": 7000,
-      "title": "[販售] (高雄）Macbook pro 2013年 15寸",
-      "author": "wachi0116 (削鉛筆)",
-      "location": "高雄市面交",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1778472971.A.CF6.html"
-    },
-    {
       "article_id": "M.1778425911.A.BD3",
       "published_at": "2026-05-10",
       "family": "Pro",
@@ -2896,22 +2800,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1778138800.A.D79.html"
-    },
-    {
-      "article_id": "M.1778125982.A.7B7",
-      "published_at": "2026-05-07",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1778125982.A.7B7.html"
     },
     {
       "article_id": "M.1778083150.A.63C",
@@ -3392,22 +3280,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1777538611.A.5ED.html"
-    },
-    {
-      "article_id": "M.1777527860.A.CFA",
-      "published_at": "2026-04-30",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1777527860.A.CFA.html"
     },
     {
       "article_id": "M.1777441989.A.06B",
@@ -3904,22 +3776,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1776698818.A.E34.html"
-    },
-    {
-      "article_id": "M.1776652027.A.C8E",
-      "published_at": "2026-04-20",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 512,
-      "storage_gb": 512,
-      "price_ntd": 58000,
-      "title": "[販售] 新北 Macbook Pro 14吋 2024 512GB 全新",
-      "author": "chao02100 (愛如潮水)",
-      "location": "板橋",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1776652027.A.C8E.html"
     },
     {
       "article_id": "M.1776596221.A.E2D",
