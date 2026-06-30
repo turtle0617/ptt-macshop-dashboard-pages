@@ -1,5 +1,5 @@
 window.MACSHOP_DATA = {
-  "generatedAt": "2026-06-30T06:51:53.529Z",
+  "generatedAt": "2026-06-30T07:04:55.053Z",
   "listings": [
     {
       "article_id": "M.1782752508.A.EC4",
@@ -290,38 +290,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782554414.A.6B6.html"
     },
     {
-      "article_id": "M.1782550001.A.PRO",
-      "published_at": "2026-06-27",
-      "family": "Pro",
-      "model_year": "2024",
-      "chip": "M4 Pro",
-      "memory_gb": 24,
-      "storage_gb": 512,
-      "price_ntd": 49000,
-      "title": "[販售] MacBook Pro M4 Pro 14吋 24/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782550001.A.PRO.html"
-    },
-    {
-      "article_id": "M.1782546250.A.98C",
-      "published_at": "2026-06-27",
-      "family": "Pro",
-      "model_year": "2025",
-      "chip": "M5 Pro",
-      "memory_gb": 48,
-      "storage_gb": 1024,
-      "price_ntd": 113000,
-      "title": "[販售] MacBook Pro M5 Pro 16吋 48GB/1TB 未拆",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782546250.A.98C.html"
-    },
-    {
       "article_id": "M.1782542528.A.B88",
       "published_at": "2026-06-27",
       "family": "Pro",
@@ -336,22 +304,6 @@ window.MACSHOP_DATA = {
       "condition": "new/sealed",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782542528.A.B88.html"
-    },
-    {
-      "article_id": "M.1782541598.A.C4E",
-      "published_at": "2026-06-27",
-      "family": "Air",
-      "model_year": "2025",
-      "chip": "M5",
-      "memory_gb": 16,
-      "storage_gb": 1024,
-      "price_ntd": 56000,
-      "title": "[販售] MacBook Air M5 15吋 16GB/1TB 未拆",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782541598.A.C4E.html"
     },
     {
       "article_id": "M.1782535487.A.884",
@@ -418,22 +370,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782520349.A.BF5.html"
     },
     {
-      "article_id": "M.1782544826.A.A86",
-      "published_at": "2026-06-26",
-      "family": "Air",
-      "model_year": "2024",
-      "chip": "M3",
-      "memory_gb": 16,
-      "storage_gb": 256,
-      "price_ntd": 32800,
-      "title": "[販售] MacBook Air M3 15吋 16/256",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782544826.A.A86.html"
-    },
-    {
       "article_id": "M.1782491970.A.D28",
       "published_at": "2026-06-26",
       "family": "Air",
@@ -448,22 +384,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782491970.A.D28.html"
-    },
-    {
-      "article_id": "M.1782487453.A.6EF",
-      "published_at": "2026-06-26",
-      "family": "Pro",
-      "model_year": "2023",
-      "chip": "M3 Pro",
-      "memory_gb": 36,
-      "storage_gb": 1024,
-      "price_ntd": 52000,
-      "title": "[販售] MacBook Pro M3 Pro 14吋 36/1TB",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782487453.A.6EF.html"
     },
     {
       "article_id": "M.1782481420.A.D05",
@@ -578,22 +498,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782371147.A.C04.html"
     },
     {
-      "article_id": "M.1782500001.A.PRO",
-      "published_at": "2026-06-24",
-      "family": "Pro",
-      "model_year": "2022",
-      "chip": "M2",
-      "memory_gb": 8,
-      "storage_gb": 512,
-      "price_ntd": 32000,
-      "title": "[販售] MacBook Pro M2 13吋 8/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782500001.A.PRO.html"
-    },
-    {
       "article_id": "M.1782311780.A.37A",
       "published_at": "2026-06-24",
       "family": "Air",
@@ -624,22 +528,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1782309127.A.97D.html"
-    },
-    {
-      "article_id": "M.1782487453.A.AIR",
-      "published_at": "2026-06-23",
-      "family": "Air",
-      "model_year": "2024",
-      "chip": "M4",
-      "memory_gb": 16,
-      "storage_gb": 512,
-      "price_ntd": 29000,
-      "title": "[販售] MacBook Air M4 13.6 16/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782487453.A.AIR.html"
     },
     {
       "article_id": "M.1782230701.A.1CD",
@@ -1202,22 +1090,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1781245071.A.6E9.html"
     },
     {
-      "article_id": "M.1781225148.A.410",
-      "published_at": "2026-06-12",
-      "family": "Air",
-      "model_year": "2017",
-      "chip": "M1",
-      "memory_gb": 8,
-      "storage_gb": 128,
-      "price_ntd": 19000,
-      "title": "[販售] 新北 iMac M1 256g、MacBook Air i5 128g",
-      "author": "nunipy (sale)",
-      "location": "新北板橋江子翠面交",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1781225148.A.410.html"
-    },
-    {
       "article_id": "M.1781188258.A.C10",
       "published_at": "2026-06-11",
       "family": "Pro",
@@ -1602,22 +1474,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1780395734.A.48F.html"
     },
     {
-      "article_id": "M.1780389066.A.CA9",
-      "published_at": "2026-06-02",
-      "family": "Air",
-      "model_year": "2017",
-      "chip": "M1",
-      "memory_gb": 8,
-      "storage_gb": 128,
-      "price_ntd": 20000,
-      "title": "[販售] 新北 iMac M1 256g、MacBook Air i5 128g",
-      "author": "nunipy (sale)",
-      "location": "新北板橋江子翠面交",
-      "condition": "new/sealed",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1780389066.A.CA9.html"
-    },
-    {
       "article_id": "M.1780363431.A.210",
       "published_at": "2026-06-02",
       "family": "Pro",
@@ -1714,22 +1570,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1780208526.A.033.html"
     },
     {
-      "article_id": "M.1780119980.A.99D",
-      "published_at": "2026-05-30",
-      "family": "Pro",
-      "model_year": "2019",
-      "chip": "Intel",
-      "memory_gb": 16,
-      "storage_gb": 256,
-      "price_ntd": 8900,
-      "title": "[販售] MacBook Pro 15吋 Intel i7 2019 16/256",
-      "author": "PTT sample",
-      "location": "高雄",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1780119980.A.99D.html"
-    },
-    {
       "article_id": "M.1780119189.A.B9D",
       "published_at": "2026-05-30",
       "family": "Air",
@@ -1776,22 +1616,6 @@ window.MACSHOP_DATA = {
       "condition": "new/sealed",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1780102802.A.0D5.html"
-    },
-    {
-      "article_id": "M.1782450001.A.AIR",
-      "published_at": "2026-05-28",
-      "family": "Air",
-      "model_year": "2023",
-      "chip": "M3",
-      "memory_gb": 8,
-      "storage_gb": 512,
-      "price_ntd": 27000,
-      "title": "[販售] MacBook Air M3 8/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782450001.A.AIR.html"
     },
     {
       "article_id": "M.1779984669.A.362",
@@ -1922,22 +1746,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1779869627.A.488.html"
     },
     {
-      "article_id": "M.1782400001.A.AIR",
-      "published_at": "2026-05-26",
-      "family": "Air",
-      "model_year": "2022",
-      "chip": "M2",
-      "memory_gb": 8,
-      "storage_gb": 512,
-      "price_ntd": 20500,
-      "title": "[販售] MacBook Air M2 8/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782400001.A.AIR.html"
-    },
-    {
       "article_id": "M.1779815892.A.F11",
       "published_at": "2026-05-26",
       "family": "Pro",
@@ -2034,22 +1842,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1779593978.A.DA6.html"
     },
     {
-      "article_id": "M.1782300001.A.AIR",
-      "published_at": "2026-05-23",
-      "family": "Air",
-      "model_year": "2023",
-      "chip": "M3",
-      "memory_gb": 16,
-      "storage_gb": 512,
-      "price_ntd": 32000,
-      "title": "[販售] MacBook Air M3 15吋 16/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782300001.A.AIR.html"
-    },
-    {
       "article_id": "M.1779544793.A.3AB",
       "published_at": "2026-05-23",
       "family": "Pro",
@@ -2144,54 +1936,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1779418741.A.408.html"
-    },
-    {
-      "article_id": "M.1782200001.A.AIR",
-      "published_at": "2026-05-21",
-      "family": "Air",
-      "model_year": "2022",
-      "chip": "M2",
-      "memory_gb": 8,
-      "storage_gb": 256,
-      "price_ntd": 19000,
-      "title": "[販售] MacBook Air M2 8/256",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782200001.A.AIR.html"
-    },
-    {
-      "article_id": "M.1782148940.A.544",
-      "published_at": "2026-05-20",
-      "family": "Air",
-      "model_year": "2024",
-      "chip": "M4",
-      "memory_gb": 16,
-      "storage_gb": 512,
-      "price_ntd": 28000,
-      "title": "[販售] MacBook Air M4 13吋 16/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1782148940.A.544.html"
-    },
-    {
-      "article_id": "M.1779371724.A.5EC",
-      "published_at": "2026-05-20",
-      "family": "Pro",
-      "model_year": "2020",
-      "chip": "M1",
-      "memory_gb": 8,
-      "storage_gb": 256,
-      "price_ntd": 21000,
-      "title": "[販售] MacBook Pro M1 13吋 8/256",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1779371724.A.5EC.html"
     },
     {
       "article_id": "M.1779298501.A.05E",
@@ -2850,22 +2594,6 @@ window.MACSHOP_DATA = {
       "url": "https://www.ptt.cc/bbs/MacShop/M.1778047317.A.B3D.html"
     },
     {
-      "article_id": "M.1778000001.A.PRO",
-      "published_at": "2026-05-06",
-      "family": "Pro",
-      "model_year": "2021",
-      "chip": "M1 Pro",
-      "memory_gb": 16,
-      "storage_gb": 512,
-      "price_ntd": 42000,
-      "title": "[販售] MacBook Pro M1 Pro 14吋 16/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1778000001.A.PRO.html"
-    },
-    {
       "article_id": "M.1777990140.A.B63",
       "published_at": "2026-05-05",
       "family": "Pro",
@@ -2880,22 +2608,6 @@ window.MACSHOP_DATA = {
       "condition": "used",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1777990140.A.B63.html"
-    },
-    {
-      "article_id": "M.1777969440.A.031",
-      "published_at": "2026-05-05",
-      "family": "Pro",
-      "model_year": "2021",
-      "chip": "M1 Max",
-      "memory_gb": 32,
-      "storage_gb": 2048,
-      "price_ntd": 58000,
-      "title": "[販售] MacBook Pro M1 Max 14吋 32/2TB",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1777969440.A.031.html"
     },
     {
       "article_id": "M.1777959939.A.897",
@@ -3872,118 +3584,6 @@ window.MACSHOP_DATA = {
       "condition": "new/sealed",
       "parse_quality": "llm-verified",
       "url": "https://www.ptt.cc/bbs/MacShop/M.1776422960.A.2E4.html"
-    },
-    {
-      "article_id": "M.1776129011.A.B61",
-      "published_at": "2026-04-14",
-      "family": "Pro",
-      "model_year": "2020",
-      "chip": "Intel",
-      "memory_gb": 16,
-      "storage_gb": 512,
-      "price_ntd": 10000,
-      "title": "[販售] MacBook Pro 13吋 Intel i5 16/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1776129011.A.B61.html"
-    },
-    {
-      "article_id": "M.1775576534.A.53B",
-      "published_at": "2026-04-09",
-      "family": "Pro",
-      "model_year": "2023",
-      "chip": "M3 Max",
-      "memory_gb": 36,
-      "storage_gb": 1024,
-      "price_ntd": 85000,
-      "title": "[販售] MacBook Pro M3 Max 16吋 36/1TB",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1775576534.A.53B.html"
-    },
-    {
-      "article_id": "M.1775608158.A.F8F",
-      "published_at": "2026-04-08",
-      "family": "Pro",
-      "model_year": "2023",
-      "chip": "M3 Pro",
-      "memory_gb": 18,
-      "storage_gb": 512,
-      "price_ntd": 45000,
-      "title": "[販售] MacBook Pro M3 Pro 16吋 18/512",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1775608158.A.F8F.html"
-    },
-    {
-      "article_id": "M.1775210360.A.A05",
-      "published_at": "2026-04-04",
-      "family": "Air",
-      "model_year": "2020",
-      "chip": "M1",
-      "memory_gb": 16,
-      "storage_gb": 1024,
-      "price_ntd": 18000,
-      "title": "[販售] MacBook Air M1 16/1TB",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1775210360.A.A05.html"
-    },
-    {
-      "article_id": "M.1774928309.A.1CC",
-      "published_at": "2026-04-02",
-      "family": "Air",
-      "model_year": "2020",
-      "chip": "M1",
-      "memory_gb": 8,
-      "storage_gb": 256,
-      "price_ntd": 7800,
-      "title": "[販售] MacBook Air M1 8/256",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1774928309.A.1CC.html"
-    },
-    {
-      "article_id": "M.1774797417.A.56F",
-      "published_at": "2026-03-29",
-      "family": "Air",
-      "model_year": "Intel-era",
-      "chip": "Intel",
-      "memory_gb": 8,
-      "storage_gb": 128,
-      "price_ntd": 5000,
-      "title": "[販售] MacBook Air Intel",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1774797417.A.56F.html"
-    },
-    {
-      "article_id": "M.1774758937.A.8A0",
-      "published_at": "2026-03-29",
-      "family": "Air",
-      "model_year": "2024",
-      "chip": "M4",
-      "memory_gb": 16,
-      "storage_gb": 256,
-      "price_ntd": 25500,
-      "title": "[販售] MacBook Air M4 13吋 16/256",
-      "author": "PTT sample",
-      "location": "unspecified",
-      "condition": "used",
-      "parse_quality": "llm-verified",
-      "url": "https://www.ptt.cc/bbs/MacShop/M.1774758937.A.8A0.html"
     }
   ]
 };
