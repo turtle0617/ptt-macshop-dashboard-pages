@@ -159,6 +159,19 @@ function point(row, label) {
   };
 }
 
+function comparableSpecLabel(row) {
+  return `${row.family} ${row.chip} ${row.memory_gb}GB/${formatStorage(row.storage_gb)}`;
+}
+
+function hasActiveFilters(filters) {
+  return FILTER_IDS.some(id => filters[id].size > 0)
+    || Boolean(filters.search)
+    || filters.minPrice > 0
+    || Number.isFinite(filters.maxPrice)
+    || filters.dateFrom !== (state.dateRange.min || "0000-01-01")
+    || filters.dateTo !== (state.dateRange.max || "9999-12-31");
+}
+
 function spreadSameDayPoints(points) {
   const buckets = new Map();
   for (const p of points) {
@@ -209,11 +222,12 @@ function compactChart(points) {
   };
 }
 
-function buildMarketChart(rows) {
+function buildMarketChart(rows, filters = parseCurrentFilters()) {
+  const useComparableSpecColors = hasActiveFilters(filters);
   const points = rows
     .filter(row => Number.isFinite(Number(row.price_ntd)) && Date.parse(row.published_at))
     .sort((a, b) => Date.parse(a.published_at) - Date.parse(b.published_at))
-    .map(row => point(row, row.family));
+    .map(row => point(row, useComparableSpecColors ? comparableSpecLabel(row) : row.family));
   return compactChart(points);
 }
 
@@ -385,15 +399,23 @@ function chartScales() {
   };
 }
 
+function colorForLabel(label) {
+  if (label === "Air") return "#60a5fa";
+  if (label === "Pro") return "#22c55e";
+  let hash = 0;
+  for (const char of label) hash = ((hash << 5) - hash + char.charCodeAt(0)) | 0;
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue} 82% 64%)`;
+}
+
 function groupedDatasets(points) {
-  const palette = ["#60a5fa", "#22c55e", "#f97316", "#e879f9", "#facc15", "#38bdf8", "#fb7185", "#a78bfa"];
   const grouped = new Map();
   points.forEach(chartPoint => {
     if (!grouped.has(chartPoint.label)) grouped.set(chartPoint.label, []);
     grouped.get(chartPoint.label).push({ x: chartPoint.displayX || chartPoint.x, y: chartPoint.y, point: chartPoint });
   });
-  return [...grouped.entries()].map(([label, data], index) => {
-    const color = palette[index % palette.length];
+  return [...grouped.entries()].map(([label, data]) => {
+    const color = colorForLabel(label);
     const prices = data.map(item => item.y);
     return {
       label,
@@ -547,7 +569,7 @@ function render() {
   renderStats(buildStats(filtered));
   renderChips();
   renderSpecPreset(buildSpecs(state.records.filter(row => matchesScalarFilters(row, cleanedFilters))));
-  renderMarketChart(buildMarketChart(filtered));
+  renderMarketChart(buildMarketChart(filtered, cleanedFilters));
   renderSpecChart(buildSameSpecChart(filtered));
   renderTable(page.rows);
   renderPager(page.pagination);
