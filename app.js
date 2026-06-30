@@ -445,8 +445,8 @@ function renderSpecChart(chartData) {
   }
   setChartEmpty("specEmpty", false);
   specChart = new Chart(ctx, {
-    type: "line",
-    data: { datasets: groupedDatasets(points) },
+    type: "scatter",
+    data: { datasets: groupedDatasets(points).map(dataset => ({ ...dataset, showLine: false, borderWidth: 0 })) },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -458,10 +458,11 @@ function renderSpecChart(chartData) {
             title: items => items[0].raw.point.title || "",
             label: item => {
               const meta = item.dataset.meta;
+              const point = item.raw.point;
               return [
                 `Price: ${formatPrice(item.raw.y)}`,
                 `Spec: ${item.dataset.label}`,
-                `Year: ${item.raw.point.year}`,
+                `Year: ${point.year}`,
                 `Range: ${formatPrice(meta.min)} / ${formatPrice(meta.median)} / ${formatPrice(meta.max)}`
               ];
             }
