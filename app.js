@@ -11,6 +11,7 @@ const FILTER_CONFIG = {
 const FILTER_IDS = Object.keys(FILTER_CONFIG);
 const DEFAULT_PAGE_SIZE = 50;
 const MAX_CHART_POINTS = 800;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 const state = {
   records: Array.isArray(DATA.listings) ? DATA.listings : [],
@@ -158,6 +159,28 @@ function point(row, label) {
   };
 }
 
+function spreadSameDayPoints(points) {
+  const buckets = new Map();
+  for (const p of points) {
+    const date = new Date(p.x).toISOString().slice(0, 10);
+    const key = `${p.label}|${date}`;
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(p);
+  }
+
+  return [...buckets.values()].flatMap(items => {
+    const sorted = [...items].sort((a, b) => {
+      const aid = Number(a.article_id?.match(/^M\.(\d+)\./)?.[1] || 0);
+      const bid = Number(b.article_id?.match(/^M\.(\d+)\./)?.[1] || 0);
+      return aid - bid || a.y - b.y;
+    });
+    return sorted.map((item, index) => ({
+      ...item,
+      displayX: item.x + ((index + 1) / (sorted.length + 1)) * DAY_MS
+    }));
+  }).sort((a, b) => a.displayX - b.displayX);
+}
+
 function compactChart(points) {
   if (points.length <= MAX_CHART_POINTS) return { mode: "raw", points };
   const buckets = new Map();
@@ -215,7 +238,7 @@ function buildSameSpecChart(rows) {
     .filter(row => Number.isFinite(Number(row.price_ntd)) && Date.parse(row.published_at))
     .sort((a, b) => Date.parse(a.published_at) - Date.parse(b.published_at))
     .map(row => point(row, label));
-  return { state: points.length ? "ready" : "empty", ...compactChart(points) };
+  return { state: points.length ? "ready" : "empty", mode: "raw", points: spreadSameDayPoints(points) };
 }
 
 function specLabel(parts, count) {
@@ -367,7 +390,7 @@ function groupedDatasets(points) {
   const grouped = new Map();
   points.forEach(chartPoint => {
     if (!grouped.has(chartPoint.label)) grouped.set(chartPoint.label, []);
-    grouped.get(chartPoint.label).push({ x: chartPoint.x, y: chartPoint.y, point: chartPoint });
+    grouped.get(chartPoint.label).push({ x: chartPoint.displayX || chartPoint.x, y: chartPoint.y, point: chartPoint });
   });
   return [...grouped.entries()].map(([label, data], index) => {
     const color = palette[index % palette.length];
@@ -445,8 +468,8 @@ function renderSpecChart(chartData) {
   }
   setChartEmpty("specEmpty", false);
   specChart = new Chart(ctx, {
-    type: "scatter",
-    data: { datasets: groupedDatasets(points).map(dataset => ({ ...dataset, showLine: false, borderWidth: 0 })) },
+    type: "line",
+    data: { datasets: groupedDatasets(points) },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -463,6 +486,7 @@ function renderSpecChart(chartData) {
                 `Price: ${formatPrice(item.raw.y)}`,
                 `Spec: ${item.dataset.label}`,
                 `Year: ${point.year}`,
+                `Date: ${new Date(point.x).toISOString().slice(0, 10)}`,
                 `Range: ${formatPrice(meta.min)} / ${formatPrice(meta.median)} / ${formatPrice(meta.max)}`
               ];
             }
