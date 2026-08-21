@@ -1,6 +1,22 @@
 window.MACSHOP_DATA = {
-  "generatedAt": "2026-08-20T17:01:21.951Z",
+  "generatedAt": "2026-08-21T04:15:38.447Z",
   "listings": [
+    {
+      "article_id": "M.1787269240.A.949",
+      "published_at": "2026-08-21",
+      "family": "Air",
+      "model_year": "unspecified",
+      "chip": "M1",
+      "memory_gb": 8,
+      "storage_gb": 256,
+      "price_ntd": 9500,
+      "title": "[販售] 彰化 MacBook Air 13吋 M1 8/25",
+      "author": "Dr2Machii",
+      "location": "彰化可面交",
+      "condition": "used",
+      "parse_quality": "llm-verified",
+      "url": "https://www.ptt.cc/bbs/MacShop/M.1787269240.A.949.html"
+    },
     {
       "article_id": "M.1787244436.A.337",
       "published_at": "2026-08-21",
