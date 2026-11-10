@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+  <base href="./">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PTT MacShop MacBook Price Dashboard</title>
@@ -385,20 +386,32 @@
       .actions { flex-direction: column; align-items: stretch; }
       .chart-wrap { height: 320px; }
     }
+    [hidden] { display: none !important; }
+    .product-tabs { display:flex; gap:10px; flex-wrap:wrap; margin:20px 0 12px; }
+    .product-tabs a { padding:10px 20px; border:1px solid #334155; border-radius:999px; text-decoration:none; color:#cbd5e1; }
+    .product-tabs a[aria-current="page"] { background:#1d4ed8; border-color:#60a5fa; color:white; }
+    .load-bar { display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-size:13px; margin-bottom:16px; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <div>
-        <h1>PTT MacShop MacBook Price Dashboard</h1>
-        <div class="subtitle">
+        <h1 id="pageTitle">PTT MacShop Price Dashboard</h1>
+        <div class="subtitle" id="subtitle">
           依 Air / Pro、年份、Chip、Storage、Memory 快速篩選，查看價格走勢與原始販售文章。
         </div>
       </div>
     </header>
 
+    <nav class="product-tabs" aria-label="Product">
+      <a data-product="macbook" href="macbook">MacBook</a>
+      <a data-product="iphone17" href="iphone17">iPhone 17</a>
+      <a data-product="iphone18" href="iphone18">iPhone 18</a>
+    </nav>
+    <div class="load-bar"><span id="loadStatus" role="status" aria-live="polite">Loading…</span><button id="retryBtn" class="secondary">Reload</button></div>
     <section class="panel filters">
+      <div class="field" hidden><label>Model</label><div id="model" class="multi-select" data-filter="model"></div></div>
       <div class="field">
         <label>Series</label>
         <div id="family" class="multi-select" data-filter="family"></div>
@@ -471,7 +484,7 @@
           <div class="chart-header">
             <div>
               <h2>Market scatter</h2>
-              <div class="hint">每個點代表一篇販售文章；顏色依 Series / Chip 分組。</div>
+              <div class="hint">每個點代表一件刊登商品；依機型或規格分組。</div>
             </div>
             <span id="resultLabel" class="badge">0 results</span>
           </div>
@@ -490,7 +503,7 @@
           <div class="chart-header">
             <div>
               <h2>Same-spec history</h2>
-              <div class="hint">同一條線代表相同 Series / Chip / Memory / Storage；Year 會在 hover tooltip 顯示。</div>
+              <div class="hint" id="historyHint">同一條線代表相同 Series / Chip / Memory / Storage；Year 會在 hover tooltip 顯示。</div>
             </div>
             <div class="chart-tools">
               <label for="specPreset">Quick spec</label>
@@ -522,10 +535,10 @@
           <thead>
             <tr>
               <th data-sort="published_at" class="date-cell">Date</th>
-              <th data-sort="family">Series</th>
-              <th data-sort="model_year">Year</th>
-              <th data-sort="chip">Chip</th>
-              <th data-sort="memory_gb">Memory</th>
+              <th id="seriesHeading" data-sort="family">Series</th>
+              <th data-mac-column data-sort="model_year">Year</th>
+              <th data-mac-column data-sort="chip">Chip</th>
+              <th data-mac-column data-sort="memory_gb">Memory</th>
               <th data-sort="storage_gb">Storage</th>
               <th data-sort="price_ntd">Price</th>
               <th data-sort="location">Location</th>
@@ -551,7 +564,7 @@
     </div>
   </div>
 
-<script src="listings-data.js"></script>
+<script src="site.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

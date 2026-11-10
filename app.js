@@ -1,21 +1,26 @@
-const DATA = window.MACSHOP_DATA || {};
+const Site = window.MacShopSite;
+const APP_BASE = new URL(document.baseURI).pathname;
+const dataCache = new Map();
+let loadVersion = 0;
+let activeProduct = 'macbook';
 const $ = (id) => document.getElementById(id);
 
-const FILTER_CONFIG = {
+let FILTER_CONFIG = {
   family: { field: "family", formatter: value => value, numeric: false },
   year: { field: "model_year", formatter: value => value, numeric: false },
   chip: { field: "chip", formatter: value => value, numeric: false },
   storage: { field: "storage_gb", formatter: value => formatStorage(Number(value)), numeric: true },
   memory: { field: "memory_gb", formatter: value => `${value}GB`, numeric: true }
 };
-const FILTER_IDS = Object.keys(FILTER_CONFIG);
+let FILTER_IDS = Object.keys(FILTER_CONFIG);
 const DEFAULT_PAGE_SIZE = 50;
 const MAX_CHART_POINTS = 800;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const state = {
-  records: Array.isArray(DATA.listings) ? DATA.listings : [],
+  records: [],
   filters: {
+    model: new Set(),
     family: new Set(),
     year: new Set(),
     chip: new Set(),
@@ -65,6 +70,7 @@ function average(values) {
 
 function parseCurrentFilters() {
   return {
+    model: state.filters.model,
     family: state.filters.family,
     year: state.filters.year,
     chip: state.filters.chip,
@@ -80,7 +86,7 @@ function parseCurrentFilters() {
 
 function matchesSearch(row, search) {
   if (!search) return true;
-  const haystack = `${row.title} ${row.family} ${row.model_year} ${row.chip} ${row.memory_gb} ${row.storage_gb} ${row.location}`.toLowerCase();
+  const haystack = `${row.title} ${row.model || ""} ${row.family} ${row.model_year} ${row.chip} ${row.memory_gb} ${row.storage_gb} ${row.location}`.toLowerCase();
   return haystack.includes(search);
 }
 
@@ -143,7 +149,7 @@ function buildStats(rows) {
 }
 
 function hasExactSpecSelected() {
-  return ["family", "chip", "storage", "memory"].every(id => state.filters[id].size === 1);
+  return Site.products[activeProduct].spec.every(id => state.filters[id].size === 1);
 }
 
 function point(row, label) {
@@ -153,14 +159,14 @@ function point(row, label) {
     label,
     article_id: row.article_id,
     title: row.title,
-    year: row.model_year,
-    spec: `${row.family} ${row.model_year} ${row.chip} ${row.memory_gb}GB/${formatStorage(row.storage_gb)}`,
+    year: row.model_year || row.generation,
+    spec: comparableSpecLabel(row),
     url: row.url
   };
 }
 
 function comparableSpecLabel(row) {
-  return `${row.family} ${row.chip} ${row.memory_gb}GB/${formatStorage(row.storage_gb)}`;
+  return activeProduct === "macbook" ? `${row.family} ${row.chip} ${row.memory_gb}GB/${formatStorage(row.storage_gb)}` : `${Site.products[activeProduct].label} ${Site.modelLabel(row.model)} ${formatStorage(row.storage_gb)}`;
 }
 
 function hasActiveFilters(filters) {
@@ -227,7 +233,7 @@ function buildMarketChart(rows, filters = parseCurrentFilters()) {
   const points = rows
     .filter(row => Number.isFinite(Number(row.price_ntd)) && Date.parse(row.published_at))
     .sort((a, b) => Date.parse(a.published_at) - Date.parse(b.published_at))
-    .map(row => point(row, useComparableSpecColors ? comparableSpecLabel(row) : row.family));
+    .map(row => point(row, useComparableSpecColors ? comparableSpecLabel(row) : (activeProduct === "macbook" ? row.family : Site.modelLabel(row.model))));
   return compactChart(points);
 }
 
@@ -235,19 +241,9 @@ function buildSameSpecChart(rows) {
   if (!hasExactSpecSelected()) {
     return { state: "needs_exact_spec", mode: "raw", points: [] };
   }
-  const selectedFamily = [...state.filters.family][0];
-  const selectedChip = [...state.filters.chip][0];
-  const selectedMemory = [...state.filters.memory][0];
-  const selectedStorage = [...state.filters.storage][0];
   const scalarFilters = parseCurrentFilters();
-  const sameSpecRows = state.records.filter(row =>
-    row.family === selectedFamily
-    && row.chip === selectedChip
-    && String(row.memory_gb) === selectedMemory
-    && String(row.storage_gb) === selectedStorage
-    && matchesScalarFilters(row, scalarFilters)
-  );
-  const label = `${selectedFamily} ${selectedChip} ${selectedMemory}GB/${formatStorage(selectedStorage)}`;
+  const sameSpecRows = rows.filter(row => matchesFilters(row, scalarFilters));
+  const label = sameSpecRows.length ? comparableSpecLabel(sameSpecRows[0]) : 'Same spec';
   const points = sameSpecRows
     .filter(row => Number.isFinite(Number(row.price_ntd)) && Date.parse(row.published_at))
     .sort((a, b) => Date.parse(a.published_at) - Date.parse(b.published_at))
@@ -255,20 +251,15 @@ function buildSameSpecChart(rows) {
   return { state: points.length ? "ready" : "empty", mode: "raw", points: spreadSameDayPoints(points) };
 }
 
-function specLabel(parts, count) {
-  return `${parts[0]} ${parts[1]} ${parts[2]}GB/${formatStorage(parts[3])} - ${count} posts`;
-}
-
 function buildSpecs(rows) {
   const groups = new Map();
+  const ids = Site.products[activeProduct].spec;
   for (const row of rows) {
-    const key = [row.family, row.chip, row.memory_gb, row.storage_gb].map(String).join("|");
-    if (!groups.has(key)) groups.set(key, { key, count: 0, parts: key.split("|") });
+    const key = ids.map(id => String(row[Site.fields[id]])).join('|');
+    if (!groups.has(key)) groups.set(key, { value: key, text: comparableSpecLabel(row), count: 0 });
     groups.get(key).count += 1;
   }
-  return [...groups.values()]
-    .map(group => ({ value: group.key, label: specLabel(group.parts, group.count), count: group.count }))
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "zh-Hant"));
+  return [...groups.values()].map(g => ({ ...g, label: `${g.text} - ${g.count} posts` })).sort((a,b) => b.count-a.count || a.label.localeCompare(b.label));
 }
 
 function sortRows(rows) {
@@ -294,10 +285,8 @@ function paginateRows(rows) {
 function populateMultiFilter(id, options) {
   const container = $(id);
   const current = state.filters[id] || new Set();
-  const validValues = new Set(options.map(option => String(option.value)));
-  current.forEach(value => {
-    if (!validValues.has(value)) current.delete(value);
-  });
+  const available = new Set(options.map(option => String(option.value)));
+  options = [...options, ...[...current].filter(v => !available.has(v)).map(value => ({ value, count: 0 }))];
   container.innerHTML = options.map(option => {
     const value = String(option.value);
     const checked = current.has(value) ? "checked" : "";
@@ -337,13 +326,14 @@ function renderStats(stats) {
 function renderChips() {
   const chips = [];
   const multiMap = [
+    ["model", "Model"],
     ["family", "Series"],
     ["year", "Year"],
     ["chip", "Chip"],
     ["storage", "Storage"],
     ["memory", "Memory"]
   ];
-  for (const [id, label] of multiMap) {
+  for (const [id, label] of multiMap.filter(([id]) => FILTER_IDS.includes(id))) {
     const values = [...state.filters[id]];
     if (!values.length) continue;
     chips.push(`<span class="chip">${escapeHtml(label)}: ${escapeHtml(values.map(FILTER_CONFIG[id].formatter).join(", "))}</span>`);
@@ -444,6 +434,7 @@ function renderMarketChart(chartData) {
     marketChart.destroy();
     marketChart = null;
   }
+  if (typeof Chart === "undefined" && points.length) { setChartEmpty("marketEmpty", true, "Chart unavailable", "圖表載入失敗，清單與篩選仍可使用。"); return; }
   if (!points.length) {
     setChartEmpty("marketEmpty", true, "No matching listings", "放寬篩選條件，或按 Reset 回到完整市場分布。");
     return;
@@ -481,7 +472,7 @@ function renderSpecChart(chartData) {
     specChart = null;
   }
   if (chartData.state === "needs_exact_spec") {
-    setChartEmpty("specEmpty", true, "Select one comparable spec", "請先用 Quick spec，或選定 Series、Chip、Memory、Storage 各一個選項。Year 會保留在圖表點位資訊中。");
+    setChartEmpty("specEmpty", true, "Select one comparable spec", activeProduct === "macbook" ? "請選定 Series、Chip、Memory、Storage 各一個選項。" : "請選定 Model、Storage 各一個選項。");
     return;
   }
   if (!points.length) {
@@ -489,6 +480,7 @@ function renderSpecChart(chartData) {
     return;
   }
   setChartEmpty("specEmpty", false);
+  if (typeof Chart === "undefined") { setChartEmpty("specEmpty", true, "Chart unavailable", "圖表載入失敗，清單與篩選仍可使用。"); return; }
   specChart = new Chart(ctx, {
     type: "line",
     data: { datasets: groupedDatasets(points) },
@@ -507,7 +499,7 @@ function renderSpecChart(chartData) {
               return [
                 `Price: ${formatPrice(item.raw.y)}`,
                 `Spec: ${item.dataset.label}`,
-                `Year: ${point.year}`,
+                `${activeProduct === "macbook" ? "Year" : "Generation"}: ${point.year}`,
                 `Date: ${new Date(point.x).toISOString().slice(0, 10)}`,
                 `Range: ${formatPrice(meta.min)} / ${formatPrice(meta.median)} / ${formatPrice(meta.max)}`
               ];
@@ -523,20 +515,21 @@ function renderSpecChart(chartData) {
 function renderTable(rows) {
   const tbody = $("tbody");
   $("tableEmpty").hidden = rows.length > 0;
+  const mac = activeProduct === 'macbook';
+  document.querySelectorAll('[data-mac-column]').forEach(el => { el.hidden = !mac; });
+  $('seriesHeading').textContent = mac ? 'Series' : 'Model';
+  $('seriesHeading').dataset.sort = mac ? 'family' : 'model';
   tbody.innerHTML = rows.map(row => `
     <tr>
       <td class="date-cell">${escapeHtml(row.published_at)}</td>
-      <td><span class="badge">${escapeHtml(row.family)}</span></td>
-      <td>${escapeHtml(row.model_year)}</td>
-      <td>${escapeHtml(row.chip)}</td>
-      <td>${escapeHtml(row.memory_gb)}GB</td>
+      <td><span class="badge">${escapeHtml(mac ? row.family : Site.modelLabel(row.model))}</span></td>
+      ${mac ? `<td>${escapeHtml(row.model_year)}</td><td>${escapeHtml(row.chip)}</td><td>${escapeHtml(row.memory_gb)}GB</td>` : ''}
       <td>${escapeHtml(formatStorage(row.storage_gb))}</td>
       <td class="price">${escapeHtml(formatPrice(row.price_ntd))}</td>
-      <td class="muted">${escapeHtml(row.location || "-")}</td>
+      <td class="muted">${escapeHtml(row.location || '-')}</td>
       <td class="title-cell">${escapeHtml(row.title)}</td>
       <td><a href="${escapeHtml(row.url)}" target="_blank" rel="noopener noreferrer">原文</a></td>
-    </tr>
-  `).join("");
+    </tr>`).join('');
 }
 
 function renderPager(pagination) {
@@ -551,11 +544,7 @@ function renderError(message) {
   $("tableEmpty").textContent = message;
 }
 
-function render() {
-  if (!state.records.length) {
-    renderError("No listing data loaded.");
-    return;
-  }
+function render(historyMode = "push") {
   const filters = parseCurrentFilters();
   const facets = buildFacets(state.records, filters);
   renderFilterOptions(facets);
@@ -573,6 +562,7 @@ function render() {
   renderSpecChart(buildSameSpecChart(filtered));
   renderTable(page.rows);
   renderPager(page.pagination);
+  syncUrl(historyMode);
 }
 
 function resetFilters() {
@@ -601,7 +591,7 @@ function csvEscape(value) {
 }
 
 function exportCSV() {
-  const headers = ["published_at", "family", "model_year", "chip", "memory_gb", "storage_gb", "price_ntd", "location", "condition", "title", "url"];
+  const headers = ["listing_id", "article_id", "published_at", ...(activeProduct === "macbook" ? ["family", "model_year", "chip", "memory_gb"] : ["generation", "model"]), "storage_gb", "price_ntd", "location", "condition", "title", "url"];
   const csv = [
     headers.join(","),
     ...state.filteredRows.map(row => headers.map(header => csvEscape(row[header])).join(","))
@@ -610,7 +600,7 @@ function exportCSV() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `macshop-listings-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.download = `macshop-${activeProduct}-${new Date().toISOString().slice(0, 10)}.csv`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -649,12 +639,8 @@ function initEvents() {
   $("specPreset").addEventListener("change", () => {
     const selected = $("specPreset").value;
     if (!selected) return;
-    const [family, chip, memory, storage] = selected.split("|");
     Object.values(state.filters).forEach(set => set.clear());
-    state.filters.family.add(family);
-    state.filters.chip.add(chip);
-    state.filters.memory.add(memory);
-    state.filters.storage.add(storage);
+    Site.products[activeProduct].spec.forEach((id, index) => state.filters[id].add(selected.split('|')[index]));
     ["search", "minPrice", "maxPrice"].forEach(id => {
       $(id).value = "";
     });
@@ -678,14 +664,88 @@ function initEvents() {
   });
 }
 
-function init() {
-  if (!window.MACSHOP_DATA || !Array.isArray(window.MACSHOP_DATA.listings)) {
-    renderError("Listing data file is missing or invalid.");
-    return;
-  }
-  initDateRange();
-  initEvents();
-  render();
+function currentRoute() {
+  const scalar = Object.fromEntries(Site.scalars.map(id => [id, $(id).value]));
+  if (scalar.dateFrom === state.dateRange.min) scalar.dateFrom = '';
+  if (scalar.dateTo === state.dateRange.max) scalar.dateTo = '';
+  return { key: activeProduct, filters: state.filters, scalar, page: state.page, sortKey: state.sortKey, sortDir: state.sortDir };
 }
-
+function syncUrl(mode = "push") {
+  const url = Site.serialize(currentRoute(), APP_BASE);
+  if (location.pathname + location.search !== url) history[mode === 'replace' ? 'replaceState' : 'pushState'](null, '', url);
+}
+function configureProduct(key) {
+  activeProduct = key;
+  const all = {
+    family: { field: 'family', formatter: v => v, numeric: false },
+    year: { field: 'model_year', formatter: v => v, numeric: false },
+    chip: { field: 'chip', formatter: v => v, numeric: false },
+    storage: { field: 'storage_gb', formatter: v => formatStorage(Number(v)), numeric: true },
+    memory: { field: 'memory_gb', formatter: v => `${v}GB`, numeric: true },
+    model: { field: 'model', formatter: Site.modelLabel, numeric: false }
+  };
+  FILTER_IDS = Site.products[key].filters;
+  FILTER_CONFIG = Object.fromEntries(FILTER_IDS.map(id => [id, all[id]]));
+  Object.values(state.filters).forEach(set => set.clear());
+  document.querySelectorAll('[data-filter]').forEach(el => { el.closest('.field').hidden = !FILTER_IDS.includes(el.id); });
+  document.querySelectorAll('[data-product]').forEach(el => { el.setAttribute('aria-current', el.dataset.product === key ? 'page' : 'false'); });
+  $('pageTitle').textContent = `PTT MacShop ${Site.products[key].label} Price Dashboard`;
+  document.title = $('pageTitle').textContent;
+  $('subtitle').textContent = key === 'macbook' ? '依 Air / Pro、年份、Chip、Storage、Memory 篩選販售價格。' : '依機型、容量、價格與日期篩選販售文章，標籤支援多選。';
+  $('historyHint').textContent = key === 'macbook' ? '同規格以 Series / Chip / Memory / Storage 比較。' : '同規格以機型與容量比較；每筆資料代表一件刊登商品。';
+}
+async function openRoute(url) {
+  const version = ++loadVersion;
+  clearTimeout(searchTimer);
+  try {
+    const route = Site.parseRoute(new URL(url, location.href), APP_BASE);
+    configureProduct(route.key);
+    state.records = []; state.filteredRows = [];
+    $('csvBtn').disabled = true;
+    document.querySelector('.filters').inert = true;
+    $('activeChips').textContent = 'Loading…';
+    renderStats(buildStats([])); renderTable([]); renderPager({page:1,totalPages:1}); renderFilterOptions({});
+    renderMarketChart({points:[]}); renderSpecChart({state:'needs_exact_spec',points:[]});
+    $('loadStatus').textContent = `Loading ${Site.products[route.key].label}…`;
+    const dataset = Site.products[route.key].dataset;
+    if (!dataCache.has(dataset)) {
+      const request = fetch(new URL(`datasets/${dataset}.json`, document.baseURI)).then(async response => {
+        if (!response.ok) throw Error(`Data unavailable (${response.status})`);
+        const data = await response.json();
+        if (data.schema_version !== 1 || data.dataset !== dataset || !Array.isArray(data.listings)) throw Error('Invalid dataset');
+        for (const row of data.listings) if (!/^https:\/\/www\.ptt\.cc\/bbs\/MacShop\/M\.[\da-z.]+\.html$/i.test(row.url) || !row.listing_id) throw Error('Invalid listing');
+        return data;
+      }).catch(error => { dataCache.delete(dataset); throw error; });
+      dataCache.set(dataset, request);
+    }
+    const data = await dataCache.get(dataset); if (version !== loadVersion) return;
+    state.records = data.listings;
+    initDateRange();
+    for (const id of FILTER_IDS) state.filters[id] = route.filters[id];
+    for (const id of Site.scalars) if (route.scalar[id]) $(id).value = route.scalar[id]; else if (!['dateFrom','dateTo'].includes(id)) $(id).value = '';
+    state.page = route.page; state.sortKey = route.sortKey; state.sortDir = route.sortDir;
+    $('loadStatus').textContent = data.listings.length ? `Updated ${new Date(data.generatedAt).toLocaleString()}` : '此分類目前沒有已確認的販售資料。';
+    $('csvBtn').disabled = false;
+    document.querySelector('.filters').inert = false;
+    history.replaceState(null, '', Site.serialize(currentRoute(), APP_BASE));
+    render('replace');
+  } catch (error) {
+    if (version !== loadVersion) return;
+    $('loadStatus').textContent = `${error.message} — 可重新載入或切換頁籤。`;
+    renderError(error.message);
+  }
+}
+function init() {
+  initEvents();
+  document.querySelectorAll('[data-product]').forEach(link => {
+    link.href = `${APP_BASE}${link.dataset.product}`;
+    link.addEventListener('click', event => {
+      if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();history.pushState(null, '', link.href);openRoute(link.href);
+    });
+  });
+  $('retryBtn').addEventListener('click', () => openRoute(location.href));
+  window.addEventListener('popstate', () => openRoute(location.href));
+  openRoute(location.href);
+}
 init();
